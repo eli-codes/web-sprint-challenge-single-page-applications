@@ -1,0 +1,64 @@
+import React from 'react';
+import * as Yup from 'yup';
+import { useHistory } from 'react-router-dom';
+import { Form, Button } from 'react-bootstrap';
+import { Formik, Field, ErrorMessage } from 'formik';
+
+const orderFormSchema = Yup.object().shape({
+  name: Yup.string().required('Name is required').min(2, 'Name must be at least 2 characters'),
+  address: Yup.string().required('Address is required'),
+});
+
+function OrderForm() {
+  const history = useHistory();
+
+  const handleSubmit = (values, { setSubmitting }) => {
+    console.log(values);
+    setSubmitting(false);
+    history.push('/');
+  };
+
+  return (
+    <div className="order-form" id="pizza-form">
+      <h1>Create Your Pizza Order</h1>
+      <Formik
+        initialValues={{
+          name: '',
+          address: '',
+          toppings: [],
+        }}
+        validationSchema={orderFormSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ isSubmitting }) => (
+          <Form>
+            <Form.Group controlId="formName">
+              <Form.Label>Name</Form.Label>
+              <Field type="text" name="name" placeholder="Enter your name" id="name-input" as={Form.Control} />
+              <ErrorMessage name="name must be at least 2 characters" component={Form.Text} />
+            </Form.Group>
+            <Form.Group controlId="formAddress">
+              <Form.Label>Address</Form.Label>
+              <Field type="text" name="address" placeholder="Enter your address" as={Form.Control} />
+              <ErrorMessage name="address" component={Form.Text} />
+            </Form.Group>
+            <Form.Group controlId="formToppings">
+              <Form.Label>Toppings</Form.Label>
+              <div>
+                <Form.Check type="checkbox" label="Pepperoni" value="pepperoni" name="toppings" />
+                <Form.Check type="checkbox" label="Mushrooms" value="mushrooms" name="toppings" />
+                <Form.Check type="checkbox" label="Onions" value="onions" name="toppings" />
+                <Form.Check type="checkbox" label="Sausage" value="sausage" name="toppings" />
+              </div>
+            </Form.Group>
+            <Button variant="primary" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Submitting...' : 'Place Order'}
+            </Button>
+          </Form>
+        )}
+      </Formik>
+    </div>
+  );
+}
+
+export default OrderForm;
