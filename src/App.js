@@ -5,7 +5,6 @@ import React from "react";
 import { Switch, Route } from "react-router-dom";
 
 import OrderForm from "./OrderForm";
-import ValidationForm from "./ValidationForm";
 
 const App = () => {
   return (
@@ -24,9 +23,7 @@ const App = () => {
         <Route path="/pizza">
           <OrderForm />
         </Route>
-        <Route path="/verify">
-          <ValidationForm />
-        </Route>
+        <Route path="/verify"></Route>
       </Switch>
     </>
   );
